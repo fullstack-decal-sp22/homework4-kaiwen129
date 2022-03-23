@@ -1,50 +1,65 @@
-import React from "react";
+import React, {useState} from "react";
 import './styles/Board.css';
 import Square from "./Square";
 import { render } from "@testing-library/react";
 
 function Board() {
-    var currPlayer = 'X';
-    const status = 'Next player: X';
+    const [squares, setSquares] = useState(Array(9).fill(null));
+    const [xIsNext, setStatus] = useState(true);
 
-    function renderSquare(id, func, value) {
-        return <Square id={id} click_func={func} value={value}/>;
+    function handleClick(n){
+      const sq = squares.slice();
+      sq[n] = xIsNext ? 'X' : 'O';
+      setSquares(sq);
+      setStatus(!xIsNext);
     }
 
-    function updateText(){
-      square1.setText('A');
-      /*Square.setHelper(currPlayer);
-      Square.setText(currPlayer);
-      if(currPlayer === 'X'){
-        currPlayer = 'O';
-      }
-      else{
-        currPlayer = 'X';
-      }*/
-    }
+    const status = "Next player: " + (xIsNext ? 'X' : 'O');
 
-    var square1 = renderSquare(1, updateText, 'X');
+    function renderSquare(id) {
+        return <Square onClick={() => handleClick(id)} value={squares[id]}/>;
+    }  
 
     return (  
         <div>
           <div className="board-row">
-            {square1}
-            {renderSquare(1, updateText, 'O')}
-            {renderSquare(2, updateText, 'O')}
+            {renderSquare(0)}
+            {renderSquare(1)}
+            {renderSquare(2)}
           </div>
           <div className="board-row">
-            {renderSquare(3, updateText, 'O')}
-            {renderSquare(4, updateText, 'O')}
-            {renderSquare(5, updateText, 'O')}
+            {renderSquare(3)}
+            {renderSquare(4)}
+            {renderSquare(5)}
           </div>
           <div className="board-row">
-            {renderSquare(6, updateText, 'O')}
-            {renderSquare(7, updateText, 'O')}
-            {renderSquare(8, updateText, 'O')}
+            {renderSquare(6)}
+            {renderSquare(7)}
+            {renderSquare(8)}
           </div>
-          <div className="status">{status}</div>
+          <div className="status">{calculateWinner(squares) == null ? status : "Winner: " + calculateWinner(squares)}</div>
         </div>
     )
+}
+
+function calculateWinner(squares){
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
 }
 
 export default Board;
