@@ -2,7 +2,7 @@
   "name": "hw4-starter",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://fullstack-decal.github.io/homework4-{your_username}",
+  "homepage": "https://fullstack-decal.github.io/homework4-kaiwen129",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.4",
